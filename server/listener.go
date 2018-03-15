@@ -3,30 +3,23 @@ package server
 import (
 	"fmt"
 	"net/http"
-)
 
-var (
-	guiPath = "./gui"
-	host    = "0.0.0.0"
-	port    = 8080
+	"github.com/gorilla/mux"
 )
 
 // StartListener for starting the listener
 func StartListener() {
-	router := http.NewServeMux()
+	// router := http.NewServeMux()
+	router := mux.NewRouter()
 
-	router.Handle("/", FrontendHandler)
+	router.Handle("/board/{id}", GetBoardHandler).Methods(http.MethodGet)
+	router.Handle("/board", AddBoardHandler).Methods(http.MethodPost)
+	router.PathPrefix("/").Handler(FrontendHandler).Methods(http.MethodGet)
+
 	server := &http.Server{
 		Addr:    fmt.Sprintf("%s:%d", host, port),
 		Handler: router,
 	}
 
 	server.ListenAndServe()
-
 }
-
-// FrontendHandler handles the UI requests
-var FrontendHandler = http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-	h := http.StripPrefix("/", http.FileServer(http.Dir(guiPath)))
-	h.ServeHTTP(w, r)
-})
