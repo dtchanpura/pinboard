@@ -12,6 +12,11 @@
 
         service.Connect = Connect;
         service.GetBoard = GetBoard;
+        service.GetAllBoards = GetAllBoards;
+        service.AddBlock = AddBlock;
+        service.UpdateBoard = UpdateBoard;
+        service.UpdateBlock = UpdateBlock;
+
 
         return service;
 
@@ -27,6 +32,30 @@
             return $http.get(window.location.origin + '/board/' + id, {
                 // headers
             }).then(handleSuccess, handleError)
+        }
+
+        function GetAllBoards() {
+            return $http.get(window.location.origin + '/board', {
+                // headers
+            }).then(handleSuccess, handleError)
+        }
+
+        function UpdateBoard(boardID, board) {
+            return $http.put(window.location.origin + '/board/' + boardID,
+                board
+            ).then(handleSuccess, handleError)
+        }
+
+        function UpdateBlock(boardID, blockID, block) {
+            return $http.put(window.location.origin + '/board/' + boardID + '/block/' + blockID,
+                block
+            ).then(handleSuccess, handleError)
+        }
+
+        function AddBlock(boardID, block) {
+            return $http.post(window.location.origin + '/board/' + boardID,
+                block
+            ).then(handleSuccess, handleError)
         }
 
         function handleSuccess(res) {

@@ -13,11 +13,11 @@ function config($routeProvider, $locationProvider){
     controller: 'MainController',
     controllerAs: 'vm'
   })
-  // .when('/media', {
-  //   templateUrl: 'templates/edit.html',
-  //   controller: 'EditController',
-  //   controllerAs: 'vm'
-  // })
+  .when('/edit', {
+    templateUrl: 'templates/edit.html',
+    controller: 'EditController',
+    controllerAs: 'vm'
+  })
   // // .when('/socket', {
   // //   templateUrl: 'templates/socket.html',
   // //   controller: 'SocketController',
