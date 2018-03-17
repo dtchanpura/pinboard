@@ -66,6 +66,16 @@ func (m *BoardDAO) FindByObjectID(id bson.ObjectId) (Board, error) {
 
 }
 
+// UpdateBoardDetails for updating just metadata
+func (m *BoardDAO) UpdateBoardDetails(board Board) error {
+	currentBoard, err := m.FindByObjectID(board.ID)
+	if err != nil {
+		return err
+	}
+	board.Blocks = currentBoard.Blocks
+	return m.UpdateBoard(board)
+}
+
 // UpdateBoard updates the given board
 func (m *BoardDAO) UpdateBoard(board Board) error {
 	err := db.C(COLLECTION).Update(bson.M{"_id": board.ID}, board)

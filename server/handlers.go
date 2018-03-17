@@ -120,7 +120,7 @@ var UpdateBoardHandler = http.HandlerFunc(func(w http.ResponseWriter, r *http.Re
 		return
 	}
 	jsonData.Board.ID = bson.ObjectIdHex(boardID)
-	err := boardDAO.UpdateBoard(jsonData.Board)
+	err := boardDAO.UpdateBoardDetails(jsonData.Board)
 	if err != nil {
 		respondWithError(err, http.StatusInternalServerError, w)
 		return
