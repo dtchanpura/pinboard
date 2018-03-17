@@ -3,26 +3,37 @@
         <h4>{{ vm.date }}</h4>
     </div>
     <div class="two-thirds column">
-        <input ng-model="vm.data.title" type="text"></input>
-        <span ng-click="vm.updateBoardTitle(vm.data.id, vm.data.title)" class="bordered fas fa-save"></span>
+        <input ng-model="vm.title" type="text"></input>
+        <span ng-click="vm.updateBoardTitle(vm.boardID, vm.title)" class="bordered fas fa-save"></span>
+        <a href="#/?boardId={{vm.boardID}}" target="_blank" class="bordered fas fa-share"></a>
     </div>
 </div>
 
 <div class="row">
     <div class="six columns">
-        <div class="post" data-ng-repeat="post in vm.data.blocks">
+        <div class="post" data-ng-repeat="post in vm.dataLeft.blocks">
             <input ng-model="post.title" type="text"></input>
-
             <div data-ng-repeat="p in post.paragraphs track by $index">
                 <textarea class="u-full-width" ng-model="post.paragraphs[$index]"></textarea>
             </div>
             <span ng-click="post.paragraphs.push('')" class="bordered fas fa-plus"></span>
             <span ng-click="post.paragraphs.pop()" class="bordered fas fa-minus"></span>
-            <span class="bordered fas fa-save" ng-click="vm.updateBlock(vm.data.id, post.id, post)"></span>
-            <span class="u-pull-right bordered fas fa-trash" ng-click="vm.deleteBlock(vm.data.id, post.id)"></span>
+            <span class="bordered fas fa-save" ng-click="vm.updateBlock(vm.boardID, post.id, post)"></span>
+            <span class="u-pull-right bordered fas fa-trash" ng-click="vm.deleteBlock(vm.boardID, post.id)"></span>
         </div>
+        <span ng-click="vm.dataLeft.blocks.push({'title': '', 'paragraphs': [], 'side':'left'})" class="bordered fas fa-plus"></span>
     </div>
     <div class="six columns">
-
+        <div class="post" data-ng-repeat="post in vm.dataRight.blocks">
+            <input ng-model="post.title" type="text"></input>
+            <div data-ng-repeat="p in post.paragraphs track by $index">
+                <textarea class="u-full-width" ng-model="post.paragraphs[$index]"></textarea>
+            </div>
+            <span ng-click="post.paragraphs.push('')" class="bordered fas fa-plus"></span>
+            <span ng-click="post.paragraphs.pop()" class="bordered fas fa-minus"></span>
+            <span class="bordered fas fa-save" ng-click="vm.updateBlock(vm.boardID, post.id, post)"></span>
+            <span class="u-pull-right bordered fas fa-trash" ng-click="vm.deleteBlock(vm.boardID, post.id)"></span>
+        </div>
+        <span ng-click="vm.dataRight.blocks.push({'title': '', 'paragraphs': [], 'side':'right'})" class="bordered fas fa-plus"></span>
     </div>
 </div>

@@ -10,58 +10,90 @@
     function EditController($location, $cookies, ConnectionService) {
         var vm = this;
         vm.date = (new Date()).toDateString();
+        vm.title = "";
         vm.updateBoardTitle = updateBoardTitle;
         vm.updateBlock = updateBlock;
-        vm.addParagraph = addParagraph;
-        // vm.data contains all details related to blocks
-        // vm.data has array object with blocks
-        // vm.boardId should be the id for given board.
+        vm.deleteBlock = deleteBlock;
 
         (function init() {
-            // if($cookies.get('token') !== undefined) {
-            //     $location.path('/media');
-            // } else {
-            //     $location.path('/login');
-            // }
+            vm.boardID = vm.boardID === undefined ? $location.search().boardID : vm.boardID;
             initControllers();
         })();
 
         function initControllers() {
-            vm.boardId = $location.search().boardId;
+            console.log(vm.title);
 
-            ConnectionService.GetBoard(vm.boardId).then(function(response) {
-                // console.log(response);
-                vm.data = response.data;
-                vm.title = response.data.title;
-            });
-            // var element = document.getElementById("status")
-            console.log("OK! for", vm.boardId);
+            if (vm.boardID !== undefined) {
+                ConnectionService.GetBoard(vm.boardID).then(function(response) {
+                    vm.data = response.data;
+                    vm.title = response.data.title;
+                    vm.dataRight = {blocks: []};
+                    vm.dataLeft = {blocks: []};
+                    for (var i = 0; i < response.data.blocks.length; i++) {
+                        if (response.data.blocks[i].side == "right") {
+                            vm.dataRight.blocks.push(response.data.blocks[i]);
+                        } else {
+                            vm.dataLeft.blocks.push(response.data.blocks[i]);
+                        }
+                    }
+                });
+            }
+            if ($location.search().boardID === undefined && vm.boardID !== undefined) {
+                location.href = '#/edit?boardID=' + vm.boardID;
+            }
+            console.log("OK! for", vm.boardID);
         }
 
         function updateBoardTitle(boardID, boardTitle) {
-            ConnectionService.UpdateBoard(boardID, {
-                board: {
-                    title: boardTitle
-                }
-            }).then(function(data) {
-                console.log(data)
-            })
+            if (boardID !== undefined) {
+                ConnectionService.UpdateBoard(boardID, {
+                    board: {
+                        title: boardTitle
+                    }
+                }).then(function(data) {
+                    console.log(data)
+                });
+            } else {
+                ConnectionService.AddBoard({
+                    board: {
+                        title: boardTitle
+                    }
+                }).then(function(response) {
+                    console.log(response.data);
+                    vm.boardID = response.data.id;
+                    console.log(vm.boardID);
+                    initControllers();
+                });
+            }
         }
+
+
         function updateBlock(boardID, blockID, post) {
-            ConnectionService.UpdateBlock(boardID, blockID, {
-                block: post
-            }).then(function(data) {
-                console.log(data)
+            if (blockID !== undefined) {
+                ConnectionService.UpdateBlock(boardID, blockID, {
+                    block: post
+                }).then(function(data) {
+                    console.log(data);
+                })
+            } else {
+                addBlock(boardID, post);
+            }
+        }
+
+        function addBlock(boardID, block) {
+            ConnectionService.AddBlock(boardID, block).then(function(data) {
+                console.log(data);
+                initControllers();
             })
         }
 
-        function addParagraph(post) {
-            post.paragraphs.push("");
-        }
-        function addBlock(block) {
-            ConnectionService.AddBlock(vm.boardID, block).then(function(data) {
+        function deleteBlock(boardID, blockID) {
+            ConnectionService.DeleteBlock(boardID, blockID).then(function(data) {
                 console.log(data);
+                initControllers();
             })
+
         }
+
     }
 })();

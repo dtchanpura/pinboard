@@ -32,11 +32,18 @@
             vm.boardId = $location.search().boardId;
 
             ConnectionService.GetBoard(vm.boardId).then(function(response) {
-                // console.log(response);
+                vm.dataRight = {blocks: []};
+                vm.dataLeft = {blocks: []};
                 vm.data = response.data;
                 vm.title = response.data.title;
+                for (var i = 0; i < response.data.blocks.length; i++) {
+                    if (response.data.blocks[i].side == "right") {
+                        vm.dataRight.blocks.push(response.data.blocks[i]);
+                    } else {
+                        vm.dataLeft.blocks.push(response.data.blocks[i]);
+                    }
+                }
             });
-            // var element = document.getElementById("status")
             console.log("OK! for", vm.boardId);
         }
     }

@@ -9,11 +9,15 @@
 
 <div class="row">
     <div class="six columns">
-        <div class="post" ng-repeat="post in vm.data.blocks">
-            <h4>{{post.title}}</h4>
-            <p ng-repeat="p in post.paragraphs">{{p}}</p>
+        <div class="post" ng-repeat="post in vm.dataLeft.blocks track by $index">
+            <h4>{{vm.dataLeft.blocks[$index].title}}</h4>
+            <p ng-repeat="p in vm.dataLeft.blocks[$index].paragraphs">{{p}}</p>
         </div>
     </div>
     <div class="six columns">
+        <div class="post" ng-repeat="post in vm.dataRight.blocks track by $index">
+            <h4>{{vm.dataRight.blocks[$index].title}}</h4>
+            <p ng-repeat="p in vm.dataRight.blocks[$index].paragraphs">{{p}}</p>
+        </div>
     </div>
 </div>

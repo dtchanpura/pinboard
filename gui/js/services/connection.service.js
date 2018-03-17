@@ -14,8 +14,10 @@
         service.GetBoard = GetBoard;
         service.GetAllBoards = GetAllBoards;
         service.AddBlock = AddBlock;
+        service.AddBoard = AddBoard;
         service.UpdateBoard = UpdateBoard;
         service.UpdateBlock = UpdateBlock;
+        service.DeleteBlock = DeleteBlock;
 
 
         return service;
@@ -43,7 +45,13 @@
         function UpdateBoard(boardID, board) {
             return $http.put(window.location.origin + '/board/' + boardID,
                 board
-            ).then(handleSuccess, handleError)
+            ).then(handleSuccess, handleError);
+        }
+
+        function AddBoard(board) {
+            return $http.post(window.location.origin + '/board',
+                board
+            ).then(handleSuccess, handleError);
         }
 
         function UpdateBlock(boardID, blockID, block) {
@@ -52,10 +60,14 @@
             ).then(handleSuccess, handleError)
         }
 
+        function DeleteBlock(boardID, blockID) {
+            return $http.delete(window.location.origin + '/board/' + boardID + '/block/' + blockID).then(handleSuccess, handleError)
+        }
+
         function AddBlock(boardID, block) {
-            return $http.post(window.location.origin + '/board/' + boardID,
-                block
-            ).then(handleSuccess, handleError)
+            return $http.post(window.location.origin + '/board/' + boardID + '/block', {
+                block: block
+            }).then(handleSuccess, handleError)
         }
 
         function handleSuccess(res) {
