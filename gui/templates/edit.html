@@ -12,12 +12,14 @@
     <div class="six columns">
         <div class="post" data-ng-repeat="post in vm.data.blocks">
             <input ng-model="post.title" type="text"></input>
-            <span ng-click="vm.updateBlock(vm.data.id, post.id, post)" class="bordered fas fa-save"></span>
+
             <div data-ng-repeat="p in post.paragraphs track by $index">
                 <textarea class="u-full-width" ng-model="post.paragraphs[$index]"></textarea>
             </div>
-            <span ng-click="vm.addParagraph(post)" class="bordered fas fa-plus"></span>
-            <span class="fas fa-trash u-pull-right"></span>
+            <span ng-click="post.paragraphs.push('')" class="bordered fas fa-plus"></span>
+            <span ng-click="post.paragraphs.pop()" class="bordered fas fa-minus"></span>
+            <span class="bordered fas fa-save" ng-click="vm.updateBlock(vm.data.id, post.id, post)"></span>
+            <span class="u-pull-right bordered fas fa-trash" ng-click="vm.deleteBlock(vm.data.id, post.id)"></span>
         </div>
     </div>
     <div class="six columns">
