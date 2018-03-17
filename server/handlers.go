@@ -3,7 +3,6 @@ package server
 import (
 	"encoding/json"
 	"errors"
-	"fmt"
 	"net/http"
 
 	"github.com/gorilla/mux"
@@ -58,7 +57,7 @@ var AddBoardHandler = http.HandlerFunc(func(w http.ResponseWriter, r *http.Reque
 		respondWithError(err, http.StatusBadRequest, w)
 		return
 	}
-	fmt.Println(jsonData.Board)
+	// fmt.Println(jsonData.Board)
 	updateBoard := Board{ID: bson.NewObjectId(), Title: jsonData.Board.Title, Blocks: []Block{}}
 	if len(jsonData.Board.Blocks) > 0 {
 		for _, block := range jsonData.Board.Blocks {
