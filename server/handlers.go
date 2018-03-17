@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"errors"
 	"net/http"
+	"time"
 
 	"github.com/gorilla/mux"
 	"gopkg.in/mgo.v2/bson"
@@ -85,12 +86,16 @@ var AddBlockHandler = http.HandlerFunc(func(w http.ResponseWriter, r *http.Reque
 		}
 		if jsonData.Block.Title != "" {
 			jsonData.Block.ID = bson.NewObjectId()
+			jsonData.Block.Created = time.Now()
+			jsonData.Block.Modified = time.Now()
 			boardDAO.AddBlocksToBoard(boardID, jsonData.Block)
 			respondWithJSON(jsonData.Block, http.StatusOK, w)
 		}
 		if len(jsonData.Blocks) > 0 {
 			for i := range jsonData.Blocks {
 				jsonData.Blocks[i].ID = bson.NewObjectId()
+				jsonData.Blocks[i].Created = time.Now()
+				jsonData.Blocks[i].Modified = time.Now()
 			}
 			boardDAO.AddBlocksToBoard(boardID, jsonData.Blocks...)
 			respondWithJSON(jsonData.Blocks, http.StatusOK, w)

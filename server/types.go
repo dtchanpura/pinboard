@@ -1,6 +1,8 @@
 package server
 
 import (
+	"time"
+
 	bson "gopkg.in/mgo.v2/bson"
 )
 
@@ -26,10 +28,12 @@ type APIBlockRequest struct {
 
 // Board type for structuring multiple blocks
 type Board struct {
-	ID     bson.ObjectId `bson:"_id" json:"id,omitempty"`
-	Title  string        `bson:"title" json:"title"`
-	Owner  string        `bson:"owner" json:"owner"`
-	Blocks []Block       `json:"blocks"`
+	ID       bson.ObjectId `bson:"_id" json:"id,omitempty"`
+	Title    string        `bson:"title" json:"title"`
+	Owner    string        `bson:"owner" json:"owner"`
+	Blocks   []Block       `bson:"blocks" json:"blocks"`
+	Created  time.Time     `bson:"created,omitempty" json:"created,omitempty"`
+	Modified time.Time     `bson:"modified,omitempty" json:"modified,omitempty"`
 }
 
 // Block type for showing details about a block
@@ -38,6 +42,8 @@ type Block struct {
 	Title      string        `bson:"title" json:"title"`
 	Paragraphs []Paragraph   `bson:"paragraphs" json:"paragraphs"`
 	Side       string        `bson:"side" json:"side"`
+	Created    time.Time     `bson:"created,omitempty" json:"created,omitempty"`
+	Modified   time.Time     `bson:"modified,omitempty" json:"modified,omitempty"`
 }
 
 // Paragraph type as string

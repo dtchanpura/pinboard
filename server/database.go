@@ -3,6 +3,7 @@ package server
 import (
 	"errors"
 	"log"
+	"time"
 
 	mgo "gopkg.in/mgo.v2"
 	"gopkg.in/mgo.v2/bson"
@@ -32,6 +33,8 @@ func (m *BoardDAO) Connect() {
 
 // Insert method inserts a board
 func (m *BoardDAO) Insert(board Board) error {
+	board.Created = time.Now()
+	board.Modified = time.Now()
 	err := db.C(COLLECTION).Insert(&board)
 	return err
 }
@@ -73,12 +76,20 @@ func (m *BoardDAO) UpdateBoardDetails(board Board) error {
 		return err
 	}
 	board.Blocks = currentBoard.Blocks
+	board.Created = currentBoard.Created
+	board.Modified = time.Now()
 	return m.UpdateBoard(board)
 }
 
 // UpdateBoard updates the given board
 func (m *BoardDAO) UpdateBoard(board Board) error {
-	err := db.C(COLLECTION).Update(bson.M{"_id": board.ID}, board)
+	currentBoard, err := m.FindByObjectID(board.ID)
+	if err != nil {
+		return err
+	}
+	board.Created = currentBoard.Created
+	board.Modified = time.Now()
+	err = db.C(COLLECTION).Update(bson.M{"_id": board.ID}, board)
 	return err
 }
 
@@ -116,6 +127,9 @@ func (m *BoardDAO) UpdateBlockInBoard(block Block, boardID string) error {
 	if blockIndex == -1 {
 		return errors.New("block not found")
 	}
+
+	block.Created = board.Blocks[blockIndex].Created
+	block.Modified = time.Now()
 	board.Blocks[blockIndex] = block
 	return m.UpdateBoard(board)
 }
