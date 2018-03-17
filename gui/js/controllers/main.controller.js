@@ -13,7 +13,7 @@
         // vm.data contains all details related to blocks
         // vm.data has array object with blocks
         vm.data = {};
-        // vm.boardId should be the id for given board.
+        // vm.boardID should be the id for given board.
 
         (function init() {
             // if($cookies.get('token') !== undefined) {
@@ -29,9 +29,9 @@
         })();
 
         function initControllers() {
-            vm.boardId = $location.search().boardId;
+            vm.boardID = $location.search().boardID;
 
-            ConnectionService.GetBoard(vm.boardId).then(function(response) {
+            ConnectionService.GetBoard(vm.boardID).then(function(response) {
                 vm.dataRight = {blocks: []};
                 vm.dataLeft = {blocks: []};
                 vm.data = response.data;
@@ -44,7 +44,7 @@
                     }
                 }
             });
-            console.log("OK! for", vm.boardId);
+            console.log("OK! for", vm.boardID);
         }
     }
 })();

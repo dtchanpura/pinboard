@@ -12,12 +12,24 @@
         <div class="post" ng-repeat="post in vm.dataLeft.blocks track by $index">
             <h4>{{vm.dataLeft.blocks[$index].title}}</h4>
             <p ng-repeat="p in vm.dataLeft.blocks[$index].paragraphs">{{p}}</p>
+            &nbsp;
+                <div class="u-pull-right metadata">
+                    <span class="fas fa-clock"></span>
+                    <span>{{ post.modified }}</span>
+                </div>
+
         </div>
     </div>
     <div class="six columns">
         <div class="post" ng-repeat="post in vm.dataRight.blocks track by $index">
             <h4>{{vm.dataRight.blocks[$index].title}}</h4>
             <p ng-repeat="p in vm.dataRight.blocks[$index].paragraphs">{{p}}</p>
+            &nbsp;
+                <div class="u-pull-right metadata">
+                    <span class="fas fa-clock"></span>
+                    <span>{{ post.modified }}</span>
+                </div>
+
         </div>
     </div>
 </div>
