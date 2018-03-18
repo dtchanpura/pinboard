@@ -23,6 +23,7 @@
             // }
             initControllers();
             setInterval(function() {
+                // location.reload();
                 initControllers();
             }, 10000);
 
@@ -32,6 +33,10 @@
             vm.boardID = $location.search().boardID;
 
             ConnectionService.GetBoard(vm.boardID).then(function(response) {
+                if (response.reload) {
+                    console.log('reloaded.');
+                    location.reload();
+                }
                 vm.dataRight = {blocks: []};
                 vm.dataLeft = {blocks: []};
                 vm.data = response.data;
