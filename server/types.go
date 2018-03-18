@@ -10,6 +10,7 @@ import (
 type APIResponse struct {
 	Ok           bool        `json:"ok"`
 	Data         interface{} `json:"data,omitempty"`
+	Reload       bool        `json:"reload,omitempty"`
 	ErrorMessage string      `json:"err,omitempty"`
 }
 

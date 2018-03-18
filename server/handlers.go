@@ -3,9 +3,12 @@ package server
 import (
 	"encoding/json"
 	"errors"
+	"fmt"
 	"net/http"
+	"strconv"
 	"time"
 
+	"github.com/dtchanpura/pinboard/gui"
 	"github.com/gorilla/mux"
 	"gopkg.in/mgo.v2/bson"
 )
@@ -17,9 +20,22 @@ func respondWithError(err error, status int, w http.ResponseWriter) {
 }
 
 func respondWithJSON(payload interface{}, status int, w http.ResponseWriter) {
+	respondWithJSONReload(payload, status, w, false)
+}
+
+func respondWithJSONReload(payload interface{}, status int, w http.ResponseWriter, reload bool) {
 	w.Header().Set("Content-Type", "application/json")
 	w.WriteHeader(status)
-	json.NewEncoder(w).Encode(&APIResponse{Ok: true, Data: payload})
+	json.NewEncoder(w).Encode(&APIResponse{Ok: true, Data: payload, Reload: reload})
+}
+
+func getReload(r *http.Request) bool {
+	if cookie, err := r.Cookie("reloadAt"); err == nil {
+		if value, _ := strconv.ParseInt(cookie.Value, 10, 64); value == int64(gui.VersionEpoch) {
+			return false
+		}
+	}
+	return true
 }
 
 // FrontendHandler handles the UI requests
@@ -31,20 +47,24 @@ var FrontendHandler = http.HandlerFunc(func(w http.ResponseWriter, r *http.Reque
 // GetBoardHandler handles the API requests
 var GetBoardHandler = http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 	params := mux.Vars(r)
+	reload := getReload(r)
+	if reload {
+		w.Header().Set("Set-Cookie", fmt.Sprintf("reloadAt=%d", gui.VersionEpoch))
+	}
 	if boardID := params["boardID"]; boardID != "" {
 		board, err := boardDAO.FindByID(boardID)
 		if err != nil {
 			respondWithError(err, http.StatusNotFound, w)
 			return
 		}
-		respondWithJSON(board, http.StatusOK, w)
+		respondWithJSONReload(board, http.StatusOK, w, reload)
 	} else {
 		boards, err := boardDAO.FindAll()
 		if err != nil {
 			respondWithError(err, http.StatusInternalServerError, w)
 			return
 		}
-		respondWithJSON(boards, http.StatusOK, w)
+		respondWithJSONReload(boards, http.StatusOK, w, reload)
 	}
 	// fmt.Fprintf(w, `{"ok":true,"data":{"":""}}`)
 
