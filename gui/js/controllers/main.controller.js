@@ -35,7 +35,7 @@
             ConnectionService.GetBoard(vm.boardID).then(function(response) {
                 if (response.reload) {
                     console.log('reloaded.');
-                    location.reload();
+                    location.reload(true);
                 }
                 vm.dataRight = {blocks: []};
                 vm.dataLeft = {blocks: []};
