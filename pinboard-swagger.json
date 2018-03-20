@@ -1,0 +1,126 @@
+{
+    "swagger": "2.0",
+    "info": {
+        "description": "Pinboard API Documentation",
+        "version": "0.1.0",
+        "title": "Pinboard API Docs",
+        "contact": {
+            "email": "dcprime314@gmail.com"
+        }
+    },
+    "host": "pinboard.dcpri.me",
+    "basePath": "/",
+    "tags": [{
+            "name": "board",
+            "description": "Details about boards"
+        },
+        {
+            "name": "block",
+            "description": "Details about blocks"
+        }
+    ],
+    "schemes": [
+        "http"
+    ],
+    "paths": {
+        "/board": {
+            "get": {
+                "tags": [
+                    "board"
+                ],
+                "summary": "Get details about all boards",
+                "description": "Get details about all boards",
+                "operationId": "getBoards",
+                "produces": [
+                    "application/json"
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "properties": {
+                                "ok": {
+                                    "type": "boolean"
+                                },
+                                "data": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/definitions/Board"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "board"
+                ],
+                "summary": "Add a new board",
+                "description": "Adding a new board with given details",
+                "operationId": "addBoard",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [{
+                    "in": "body",
+                    "name": "body",
+                    "description": "Board object that needs to be added",
+                    "required": true,
+                    "schema": {
+                        "$ref": "#/definitions/Board"
+                    }
+                }],
+                "responses": {
+                    "400": {
+                        "description": "Bad Request"
+                    }
+                }
+            }
+        }
+    },
+    "definitions": {
+        "Board": {
+            "type": "object",
+            "properties": {
+                "id": {
+                    "type": "string"
+                },
+                "title": {
+                    "type": "string"
+                },
+                "blocks": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/Block"
+                    }
+                }
+            }
+        },
+        "Block": {
+            "type": "object",
+            "properties": {
+                "id": {
+                    "type": "string"
+                },
+                "title": {
+                    "type": "string"
+                },
+                "paragraphs": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                }
+            }
+        }
+    },
+    "externalDocs": {
+        "description": "GitHub Repository",
+        "url": "http://github.com/dtchanpura/pinboard"
+    }
+}
