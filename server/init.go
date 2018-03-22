@@ -2,8 +2,8 @@ package server
 
 import (
 	"encoding/json"
-	"fmt"
 	"io/ioutil"
+	"log"
 )
 
 var (
@@ -17,9 +17,12 @@ var (
 func init() {
 	raw, err := ioutil.ReadFile("config.json")
 	if err != nil {
-		fmt.Println(err)
+		log.Fatal(err)
 	}
-	json.Unmarshal(raw, &configuration)
+	err = json.Unmarshal(raw, &configuration)
+	if err != nil {
+		log.Fatal(err)
+	}
 	boardDAO.Database = configuration.Database
 	boardDAO.Server = configuration.Server
 	host = configuration.Host
