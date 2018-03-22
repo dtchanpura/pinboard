@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"net/http"
 
+	"github.com/gorilla/handlers"
 	"github.com/gorilla/mux"
 )
 
@@ -34,11 +35,33 @@ func StartListener() {
 
 	// GUI Rendering
 	router.PathPrefix("/").Handler(FrontendHandler).Methods(http.MethodGet)
+	var (
+		routerHandler http.Handler
+		headersOk     handlers.CORSOption
+	)
+	if configuration.CORS != nil && configuration.CORS.Enable {
+		// Default CORS configuration
+		if configuration.CORS.AllowedHeaders == nil {
+			configuration.CORS.AllowedHeaders = []string{"Content-Type", "X-Requested-With"}
+		}
+		if configuration.CORS.AllowedOrigins == nil {
+			configuration.CORS.AllowedOrigins = []string{"*"}
+		}
+		if configuration.CORS.AllowedMethods == nil {
+			configuration.CORS.AllowedMethods = []string{http.MethodGet, http.MethodPost, http.MethodPut, http.MethodDelete, http.MethodOptions}
+		}
 
+		headersOk = handlers.AllowedHeaders(configuration.CORS.AllowedHeaders)
+		originsOk := handlers.AllowedOrigins(configuration.CORS.AllowedOrigins)
+		methodsOk := handlers.AllowedMethods(configuration.CORS.AllowedMethods)
+
+		routerHandler = handlers.CORS(originsOk, headersOk, methodsOk)(router)
+	} else {
+		routerHandler = router
+	}
 	server := &http.Server{
 		Addr:    fmt.Sprintf("%s:%d", host, port),
-		Handler: router,
+		Handler: routerHandler,
 	}
-
 	server.ListenAndServe()
 }
