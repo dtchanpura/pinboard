@@ -3,5 +3,13 @@
     "database": "pinboard",
     "host": "0.0.0.0",
     "port": 8080,
-    "guiPath": "./gui"
+    "guiPath": "./gui",
+    "debug": false,
+    "allowedOrigin": "*",
+    "cors": {
+        "enable": false,
+        "allowedOrigins": ["*"],
+        "allowedMethods": ["GET","POST","PUT","PATCH","DELETE","OPTIONS"],
+        "allowedHeaders": ["X-Requested-With", "Content-Type"]
+    }
 }
