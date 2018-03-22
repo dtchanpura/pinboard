@@ -1,0 +1,322 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "description": "Pinboard API Documentation",
+    "version": "0.1.0",
+    "title": "Pinboard API Docs"
+  },
+  "host": "localhost:8080",
+  "basePath": "/",
+  "tags": [
+    {
+      "name": "board",
+      "description": "Details about boards"
+    },
+    {
+      "name": "block",
+      "description": "Details about blocks"
+    }
+  ],
+  "schemes": [
+    "http",
+    "https"
+  ],
+  "paths": {
+    "/board": {
+      "get": {
+        "tags": [
+          "board"
+        ],
+        "summary": "Get all boards",
+        "description": "Get details about all boards",
+        "operationId": "getBoards",
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "properties": {
+                "ok": {
+                  "type": "boolean"
+                },
+                "data": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/definitions/Board"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "board"
+        ],
+        "summary": "Add a new board",
+        "description": "Adding a new board with given details",
+        "operationId": "addBoard",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "description": "Board object that needs to be added",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/Board"
+            }
+          }
+        ],
+        "responses": {
+          "400": {
+            "description": "Bad Request"
+          }
+        }
+      }
+    },
+    "/board/{boardId}": {
+      "get": {
+        "tags": [
+          "board"
+        ],
+        "summary": "Get board details",
+        "parameters": [
+          {
+            "name": "boardId",
+            "in": "path",
+            "description": "ID of board to return",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "properties": {
+                "ok": {
+                  "type": "boolean"
+                },
+                "data": {
+                  "$ref": "#/definitions/Board"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/board/{boardId}/block": {
+      "post": {
+        "tags": [
+          "block"
+        ],
+        "summary": "Add a new block in board",
+        "description": "Adds a new block with given details to board with provided boardId",
+        "parameters": [
+          {
+            "name": "boardId",
+            "in": "path",
+            "description": "Board ID where block needs to be added",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "in": "body",
+            "name": "body",
+            "description": "Block object that needs to be added",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/Block"
+            }
+          }
+        ],
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "properties": {
+                "ok": {
+                  "type": "boolean"
+                },
+                "data": {
+                  "$ref": "#/definitions/Block"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/board/{boardId}/block/{blockId}": {
+      "put": {
+        "tags": [
+          "block"
+        ],
+        "summary": "Updates a particular block in board",
+        "description": "Updates a block with given id in a board",
+        "parameters": [
+          {
+            "name": "boardId",
+            "in": "path",
+            "description": "Board ID from where block needs to be updated",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "blockId",
+            "in": "path",
+            "description": "Block ID to be updated",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "in": "body",
+            "name": "body",
+            "description": "Block object that needs to be updated",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/Block"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "properties": {
+                "ok": {
+                  "type": "boolean"
+                },
+                "data": {
+                  "$ref": "#/definitions/Block"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "block"
+        ],
+        "summary": "Delete a particular block from board",
+        "parameters": [
+          {
+            "name": "boardId",
+            "in": "path",
+            "description": "Board ID from where block needs to be deleted",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "blockId",
+            "in": "path",
+            "description": "Block ID to be deleted",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "properties": {
+                "ok": {
+                  "type": "boolean"
+                },
+                "data": {
+                  "$ref": "#/definitions/Block"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "definitions": {
+    "Board": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "readOnly": true
+        },
+        "title": {
+          "type": "string"
+        },
+        "blocks": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Block"
+          }
+        },
+        "created": {
+          "type": "string",
+          "format": "date-time",
+          "readOnly": true
+        },
+        "modified": {
+          "type": "string",
+          "format": "date-time",
+          "readOnly": true
+        }
+      }
+    },
+    "Block": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "readOnly": true
+        },
+        "title": {
+          "type": "string"
+        },
+        "paragraphs": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "side": {
+          "type": "string",
+          "enum": [
+            "right",
+            "left"
+          ]
+        },
+        "created": {
+          "type": "string",
+          "format": "date-time",
+          "readOnly": true
+        },
+        "modified": {
+          "type": "string",
+          "format": "date-time",
+          "readOnly": true
+        }
+      }
+    }
+  },
+  "externalDocs": {
+    "description": "GitHub",
+    "url": "http://github.com/dtchanpura/pinboard"
+  }
+}
