@@ -217,10 +217,9 @@ var UpdateBlockHandler = http.HandlerFunc(func(w http.ResponseWriter, r *http.Re
 var DeleteBlockHandler = http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 	params := mux.Vars(r)
 	var (
-		boardID  string
-		blockID  string
-		ok       bool
-		jsonData APIBlockRequest
+		boardID string
+		blockID string
+		ok      bool
 	)
 
 	if boardID, ok = params["boardID"]; !ok {
@@ -232,10 +231,10 @@ var DeleteBlockHandler = http.HandlerFunc(func(w http.ResponseWriter, r *http.Re
 		return
 	}
 	defer r.Body.Close()
-	err := boardDAO.RemoveBlockFromBoard(blockID, boardID)
+	removedBlock, err := boardDAO.RemoveBlockFromBoard(blockID, boardID)
 	if err != nil {
 		respondWithError(err, http.StatusBadRequest, w)
 		return
 	}
-	respondWithJSON(jsonData.Block, http.StatusOK, w)
+	respondWithJSON(removedBlock, http.StatusOK, w)
 })

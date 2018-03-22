@@ -84,7 +84,7 @@ func TestInvalidBoardID(t *testing.T) {
 		t.Fail()
 	}
 
-	err = boardDAO.RemoveBlockFromBoard(bson.NewObjectId().Hex(), boardID)
+	_, err = boardDAO.RemoveBlockFromBoard(bson.NewObjectId().Hex(), boardID)
 	if err.Error() != "invalid id" {
 		t.Fail()
 	}

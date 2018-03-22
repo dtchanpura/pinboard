@@ -104,17 +104,18 @@ func (m *BoardDAO) AddBlocksToBoard(boardID string, block ...Block) error {
 }
 
 // RemoveBlockFromBoard removes a block with provided blockID from board with provided boardID
-func (m *BoardDAO) RemoveBlockFromBoard(blockID string, boardID string) error {
+func (m *BoardDAO) RemoveBlockFromBoard(blockID string, boardID string) (*Block, error) {
 	board, err := m.FindByID(boardID)
 	if err != nil {
-		return err
+		return nil, err
 	}
 	blockIndex := findBlockIDInBoard(blockID, board)
 	if blockIndex == -1 {
-		return errors.New("block not found")
+		return nil, errors.New("block not found")
 	}
+	removedBlock := board.Blocks[blockIndex]
 	board.Blocks = append(board.Blocks[:blockIndex], board.Blocks[blockIndex+1:]...)
-	return m.UpdateBoard(board)
+	return &removedBlock, m.UpdateBoard(board)
 }
 
 // UpdateBlockInBoard updates a block in board
