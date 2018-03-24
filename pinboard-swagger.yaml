@@ -52,8 +52,23 @@ paths:
           schema:
             $ref: '#/definitions/Board'
       responses:
+        '200':
+          description: Board Created
+          schema:
+            properties:
+              ok:
+                type: boolean
+              data:
+                $ref: '#/definitions/Board'
         '400':
           description: Bad Request
+          schema:
+            properties:
+              ok:
+                type: boolean
+                default: false
+              err:
+                type: string
   '/board/{boardId}':
     get:
       tags:
@@ -67,13 +82,26 @@ paths:
           type: string
       responses:
         '200':
-          description: OK
+          description: Board found
           schema:
             properties:
               ok:
                 type: boolean
               data:
                 $ref: '#/definitions/Board'
+        '404':
+          description: Board not found
+          schema:
+            properties:
+              ok:
+                type: boolean
+                default: false
+              err:
+                type: string
+                enum:
+                  - "invalid id"
+                  - "not found"
+                default: "not found"
   '/board/{boardId}/block':
     post:
       tags:
