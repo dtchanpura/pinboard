@@ -41,3 +41,9 @@ It has functionality of refreshing board automatically at specific interval.
 ## Notes
 
 * This project is still under development.
+
+## API Docs
+
+API Docs uses [sourcey/spectacle](https://github.com/sourcey/spectacle) for generating static documentation from [swagger](https://swagger.io) json
+
+API Docs are available [here](/api-docs).
