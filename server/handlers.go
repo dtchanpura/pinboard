@@ -108,7 +108,10 @@ var AddBlockHandler = http.HandlerFunc(func(w http.ResponseWriter, r *http.Reque
 			jsonData.Block.ID = bson.NewObjectId()
 			jsonData.Block.Created = time.Now()
 			jsonData.Block.Modified = time.Now()
-			boardDAO.AddBlocksToBoard(boardID, jsonData.Block)
+			err := boardDAO.AddBlocksToBoard(boardID, jsonData.Block)
+			if err != nil {
+				respondWithError(err, http.StatusNotFound, w)
+			}
 			respondWithJSON(jsonData.Block, http.StatusOK, w)
 		}
 		if len(jsonData.Blocks) > 0 {
@@ -117,7 +120,10 @@ var AddBlockHandler = http.HandlerFunc(func(w http.ResponseWriter, r *http.Reque
 				jsonData.Blocks[i].Created = time.Now()
 				jsonData.Blocks[i].Modified = time.Now()
 			}
-			boardDAO.AddBlocksToBoard(boardID, jsonData.Blocks...)
+			err := boardDAO.AddBlocksToBoard(boardID, jsonData.Blocks...)
+			if err != nil {
+				respondWithError(err, http.StatusNotFound, w)
+			}
 			respondWithJSON(jsonData.Blocks, http.StatusOK, w)
 		}
 	} else {
