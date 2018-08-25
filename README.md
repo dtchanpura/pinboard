@@ -34,7 +34,7 @@ It has functionality of refreshing board automatically at specific interval.
 ## Future Tasks
 
 - [ ] Document invalid responses
-- [ ] Export API Documentation from Swagger JSON/YAML
+- [x] Export API Documentation from Swagger JSON/YAML
 - [ ] Add test cases
 - [ ] Login and Authentication
 
@@ -46,4 +46,4 @@ It has functionality of refreshing board automatically at specific interval.
 
 API Docs uses [sourcey/spectacle](https://github.com/sourcey/spectacle) for generating static documentation from [swagger](https://swagger.io) json
 
-API Docs are available [here](docs/api-docs).
+API Docs are available [here](docs/api-docs) and hosted [here](http://dcpri.me/pinboard/api-docs/).

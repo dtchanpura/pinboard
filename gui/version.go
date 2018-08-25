@@ -1,4 +1,4 @@
 package gui
 
 // VersionEpoch for last gui update time.
-var VersionEpoch = 1535183840
+var VersionEpoch = 1535184182
