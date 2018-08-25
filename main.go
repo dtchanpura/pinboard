@@ -1,4 +1,4 @@
-//go:generate statik -src=./gui
+//go:generate statik -m -src=./gui
 package main
 
 import (

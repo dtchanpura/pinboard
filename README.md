@@ -28,8 +28,8 @@ It has functionality of refreshing board automatically at specific interval.
 
 ### Server
 
-* Golang Gorilla Mux
-
+* gorilla/mux for handling and routing HTTP requests
+* Also rakyll/statik for bundling HTML/CSS/JS files statically
 
 ## Future Tasks
 
@@ -44,6 +44,8 @@ It has functionality of refreshing board automatically at specific interval.
 
 ## API Docs
 
-API Docs uses [sourcey/spectacle](https://github.com/sourcey/spectacle) for generating static documentation from [swagger](https://swagger.io) json
+API Docs uses [sourcey/spectacle](https://github.com/sourcey/spectacle) for
+generating static documentation from [swagger](https://swagger.io) json
 
-API Docs are available [here](docs/api-docs) and hosted [here](http://dcpri.me/pinboard/api-docs/).
+API Docs are available [here](docs/api-docs) and hosted
+[here](http://dcpri.me/pinboard/api-docs/).
