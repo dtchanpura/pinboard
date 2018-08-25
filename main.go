@@ -1,3 +1,4 @@
+//go:generate statik -src=./gui
 package main
 
 import (

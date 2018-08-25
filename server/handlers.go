@@ -40,7 +40,7 @@ func getReload(r *http.Request) bool {
 
 // FrontendHandler handles the UI requests
 var FrontendHandler = http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-	h := http.StripPrefix("/", http.FileServer(http.Dir(guiPath)))
+	h := http.StripPrefix("/", http.FileServer(statikFS))
 	h.ServeHTTP(w, r)
 })
 
