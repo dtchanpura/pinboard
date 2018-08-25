@@ -126,13 +126,27 @@ paths:
         - application/json
       responses:
         '200':
-          description: OK
+          description: Block added to Board with provided boardId
           schema:
             properties:
               ok:
                 type: boolean
               data:
                 $ref: '#/definitions/Block'
+        '404':
+          description: Board not found
+          schema:
+            properties:
+              ok:
+                type: boolean
+                default: false
+              err:
+                type: string
+                enum:
+                  - "invalid id"
+                  - "not found"
+                default: "not found"
+
   '/board/{boardId}/block/{blockId}':
     put:
       tags:
